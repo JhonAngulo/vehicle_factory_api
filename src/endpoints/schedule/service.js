@@ -20,14 +20,22 @@ class ScheduleGenerator {
 
       if (!groups[day]) {
         groups[day] = []
+        groups[day + 1] = []
       }
 
       if (!daysHors[day]) {
         daysHors[day] = 0
       }
 
-      order.manufacturing_time = vehicles.filter(item => item.mark === order.order)[0].manufacturing_time
-      daysHors[day] += parseInt(vehicles.filter(item => item.mark === order.order)[0].manufacturing_time)
+      console.log(vehicles.filter(item => item.mark === order.order).length)
+      order.manufacturing_time =
+        vehicles.filter(item => item.mark === order.order).length
+          ? vehicles.filter(item => item.mark === order.order)[0].manufacturing_time
+          : 1
+      daysHors[day] +=
+        vehicles.filter(item => item.mark === order.order).length
+          ? parseInt(vehicles.filter(item => item.mark === order.order)[0].manufacturing_time)
+          : 1
 
       if (day === 0 || day < 5) {
         if (daysHors[day] > 16) {
