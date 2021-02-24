@@ -27,7 +27,6 @@ class ScheduleGenerator {
         daysHors[day] = 0
       }
 
-      console.log(vehicles.filter(item => item.mark === order.order).length)
       order.manufacturing_time =
         vehicles.filter(item => item.mark === order.order).length
           ? vehicles.filter(item => item.mark === order.order)[0].manufacturing_time
