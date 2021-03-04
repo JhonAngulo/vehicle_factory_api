@@ -15,12 +15,11 @@ class ScheduleGenerator {
     this.data = JSON.parse(JSON.stringify(schedule))
     orders.reduce((groups, order) => {
       const date = new Date(order.date)
-      const day = date.getDay()
-      console.log(order.date, day)
+      const day = date.getUTCDay()
 
       const hours = parseInt(vehicles.filter(item => item.mark === order.order)[0].manufacturing_time)
 
-      if (day === 0 || day < 5) {
+      if (day === 1 || day < 6) {
         const temHours = this.data[day].hours + hours
         // console.log(day, hours, this.data[day].hours, temHours)
         if (temHours > 16) {
@@ -30,7 +29,7 @@ class ScheduleGenerator {
           this.data[day].data.push(order)
           this.data[day].hours += hours
         }
-      } else if (day === 5) {
+      } else if (day === 6) {
         const temHours = this.data[day].hours + hours
         if (temHours > 4) {
           this.data[day + 1].data.push(order)
@@ -66,36 +65,42 @@ module.exports = ScheduleService
 const schedule = [
   {
     id: 0,
+    day: 'domingo',
+    data: [],
+    hours: 'Dia no laboral'
+  },
+  {
+    id: 1,
     day: 'lunes',
     data: [],
     hours: 0
   },
   {
-    id: 1,
+    id: 2,
     day: 'martes',
     data: [],
     hours: 0
   },
   {
-    id: 2,
+    id: 3,
     day: 'miercoles',
     data: [],
     hours: 0
   },
   {
-    id: 3,
+    id: 4,
     day: 'jueves',
     data: [],
     hours: 0
   },
   {
-    id: 4,
+    id: 5,
     day: 'viernes',
     data: [],
     hours: 0
   },
   {
-    id: 5,
+    id: 6,
     day: 'sabado',
     data: [],
     hours: 0
