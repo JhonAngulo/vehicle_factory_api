@@ -12,45 +12,31 @@ class ScheduleGenerator {
   }
 
   agentEvent ({ orders, vehicles }) {
-    const daysHors = {}
     this.data = JSON.parse(JSON.stringify(schedule))
     orders.reduce((groups, order) => {
       const date = new Date(order.date)
       const day = date.getDay()
 
-      if (!groups[day]) {
-        groups[day] = []
-        groups[day + 1] = []
-      }
-
-      if (!daysHors[day]) {
-        daysHors[day] = 0
-      }
-
-      order.manufacturing_time =
-        vehicles.filter(item => item.mark === order.order).length
-          ? vehicles.filter(item => item.mark === order.order)[0].manufacturing_time
-          : 1
-      daysHors[day] +=
-        vehicles.filter(item => item.mark === order.order).length
-          ? parseInt(vehicles.filter(item => item.mark === order.order)[0].manufacturing_time)
-          : 1
+      const hours = parseInt(vehicles.filter(item => item.mark === order.order)[0].manufacturing_time)
 
       if (day === 0 || day < 5) {
-        if (daysHors[day] > 16) {
+        const temHours = this.data[day].hours + hours
+        // console.log(day, hours, this.data[day].hours, temHours)
+        if (temHours > 16) {
           this.data[day + 1].data.push(order)
-          groups[day + 1].push(order)
+          this.data[day + 1].hours += hours
         } else {
           this.data[day].data.push(order)
-          groups[day].push(order)
+          this.data[day].hours += hours
         }
-      } else if (day === 6) {
-        if (daysHors[day] > 4) {
+      } else if (day === 5) {
+        const temHours = this.data[day].hours + hours
+        if (temHours > 4) {
           this.data[day + 1].data.push(order)
-          groups[day + 1].push(order)
+          this.data[day + 1].hours += hours
         } else {
           this.data[day].data.push(order)
-          groups[day].push(order)
+          this.data[day].hours += hours
         }
       }
 
@@ -80,36 +66,37 @@ const schedule = [
   {
     id: 0,
     day: 'lunes',
-    data: []
+    data: [],
+    hours: 0
   },
   {
     id: 1,
     day: 'martes',
-    data: []
+    data: [],
+    hours: 0
   },
   {
     id: 2,
     day: 'miercoles',
-    data: []
+    data: [],
+    hours: 0
   },
   {
     id: 3,
     day: 'jueves',
-    data: []
+    data: [],
+    hours: 0
   },
   {
     id: 4,
     day: 'viernes',
-    data: []
+    data: [],
+    hours: 0
   },
   {
     id: 5,
     day: 'sabado',
-    data: []
-  },
-  {
-    id: 6,
-    day: 'domingo',
-    data: []
+    data: [],
+    hours: 0
   }
 ]
