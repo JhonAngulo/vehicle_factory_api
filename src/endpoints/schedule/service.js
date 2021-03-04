@@ -16,6 +16,7 @@ class ScheduleGenerator {
     orders.reduce((groups, order) => {
       const date = new Date(order.date)
       const day = date.getDay()
+      console.log(order.date, day)
 
       const hours = parseInt(vehicles.filter(item => item.mark === order.order)[0].manufacturing_time)
 
